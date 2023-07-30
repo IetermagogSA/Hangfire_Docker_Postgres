@@ -1,0 +1,21 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: testUser
+      POSTGRES_PASSWORD: testPass123#
+      POSTGRES_DB: hangfire_testdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+      dockerfile: ./Hangfire_Docker_Postgres/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Username=testUser;Password=testPass123#;Database=hangfire_testdb
+volumes:
+  pgdata:
